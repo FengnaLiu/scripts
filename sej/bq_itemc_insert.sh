@@ -68,7 +68,7 @@ for (( DATE="${START_DATE}" ; ${DATE} <= "${END_DATE}" ; DATE=`gdate -d "${DATE}
   "INSERT \`${PROJECT_ID}.dwh.ItemControlMaster_tmp\` \
   SELECT PARSE_DATE('%Y-%m-%d','${TARGET_DATE}') as processing_date, * except(processing_date, processing_datetime), TIMESTAMP(FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', current_timestamp)) as processing_datetime \
   FROM \`${PROJECT_ID}.dwh.ItemControlMaster_tmp\` \
-  WHERE processing_date = DATE_SUB('${TARGET_DATE}', INTERVAL 1 DAY) AND (item_cd,pattern_no,start_date) not in \
+  WHERE processing_date = DATE_SUB('${TARGET_DATE}', INTERVAL 1 DAY) AND processing_date > end_date AND processing_date < DATE_ADD(end_date, INTERVAL 183 DAY) AND (item_cd,pattern_no,start_date) not in \
   (select (item_cd,pattern_no,start_date) FROM \`${PROJECT_ID}.dwh.ItemControlMaster_tmp\` \
      WHERE processing_date = '${TARGET_DATE}');" \
 
